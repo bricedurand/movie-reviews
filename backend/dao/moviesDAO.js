@@ -4,7 +4,7 @@ export default class MoviesDAO {
    static async injectDB(conn) {
       if (movies) { return }
       try {
-         movies = await conn.db(process.env.MOVIEREVIEWS_NS.collection('movies'))
+         movies = await conn.db(process.env.MOVIEREVIEWS_NS).collection('movies')
       }
       catch(e) {
          console.error('unable to connect in MoviesDAO: ${e}')
@@ -28,12 +28,12 @@ export default class MoviesDAO {
       let cursor
       try {
          cursor = await movies.find(query).limit(moviesPerPage).skip(moviesPerPage * page)
-         const movieList = await cursor.toArray()
+         const moviesList = await cursor.toArray()
          const totalNumMovies = await movies.countDocuments(query)
-         return { movieList, totalNumMovies }
+         return { moviesList, totalNumMovies }
       } catch (e) {
          console.error('Unable to issue find command, ${e}')
-         return { movieList: [], totalNumMovies: 0}
+         return { moviesList: [], totalNumMovies: 0}
       }
    }
 }
