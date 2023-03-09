@@ -14,7 +14,7 @@ import { Form, Button, Col, Row, Container } from 'react-bootstrap'
 const MoviesList = props => {
     const [movies, setMovies] = useState([])
     const [searchTitle, setSearchTitle] = useState("")
-    const [searchRating, setSeartchRating] = useState("")
+    const [searchRating, setSearchRating] = useState("")
     const [ratings, setRatings] = useState(["All Ratings"])
 
     useEffect(() => {
@@ -51,7 +51,34 @@ const MoviesList = props => {
             <Container>
                 <Form>
                     <Row>
-                        
+                        <Col>
+                            <Form.Group>
+                                <Form.Control 
+                                    type="text"
+                                    placeholder='Search by title'
+                                    value={searchTitle}
+                                    onChange={onChangeSearchTitle} />
+                            </Form.Group>
+                            <Button
+                                variant="primary"
+                                type="button"
+                                onClick={findByTitle} >Search</Button>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Control as="select" onChange={onChangeSearchRating}>
+                                    {ratings.map(rating => {
+                                        return(
+                                            <option value={rating}>{rating}</option>
+                                        )
+                                    })}
+                                </Form.Control>
+                            </Form.Group>
+                            <Button 
+                                variant="primary" 
+                                type="button"
+                                onClick={findByRating}>Search</Button>
+                        </Col>
                     </Row>
                 </Form>
             </Container>
