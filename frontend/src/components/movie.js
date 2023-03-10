@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MovieDataService from '../services/movies'
 import { Link } from 'react-router-dom';
 import { Card, Container, Image, Col, Row, Button, Media} from 'react-bootstrap'
+import moment from 'moment'
 
 const Movie = props => {
    const [movie, setMovie] = useState({
@@ -48,7 +49,7 @@ const Movie = props => {
                      return (
                         <Card key={index}>
                            <Card.Body>
-                              <Card.Title>{review.name + " reviewed on" + review.date}</Card.Title>
+                              <Card.Title>{`${review.name} reviewed on ${moment(review.date).format("Do MMM YYYY")}`}</Card.Title>
                               <p>{review.review}</p>
                               {props.user && props.user.id === review.user_id &&
                                  <Row>
