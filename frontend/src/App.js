@@ -27,7 +27,7 @@ function App() {
       <Navbar bg='light' expand='lg'>
         <Navbar.Brand>Movie Reviews</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav'/>
-        <Navbar.Collapse id="basic-navbar=nav">
+        <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link><Link to="/movies">Movies</Link></Nav.Link>
             <Nav.Link>{ user ? <a onClick={logout}>Logout</a> : <Link to="/login">Login</Link> }</Nav.Link>

@@ -9,7 +9,7 @@ import Movie from './movie'
 // import Col from 'react-bootstrap/Col'
 // import Row from 'react-bootstrap/Row'
 // import Container from 'react-bootstrap/Container'
-import { Form, Button, Col, Row, Container } from 'react-bootstrap'
+import { Form, Button, Col, Row, Container, Card } from 'react-bootstrap'
 
 const MoviesList = props => {
     const [movies, setMovies] = useState([])
@@ -22,18 +22,41 @@ const MoviesList = props => {
         retrieveRatings()
     }, [])
 
+    const errorHandling =  e => { console.log(e) }
+
     const retrieveMovies = () => {
         MovieDataService.getAll().then(response => {
             console.log(response.data)
             setMovies(response.data.movies)
-        }).catch (e => { console.log(e) })
+        }).catch (errorHandling)
     }
 
     const retrieveRatings = () => {
         MovieDataService.getRatings().then(response => {
             console.log(response.data)
             setRatings(["All Ratings"].concat(response.data))
-        }).catch ( e => { console.log(e) }) 
+        }).catch (errorHandling) 
+    }
+
+    const find = (query, by) => {
+        MovieDataService.find(query, by).then(response => {
+            console.log(response.data)
+            setMovies(response.data.movies)
+        }
+        ).catch(errorHandling)
+    }
+
+    const findByTitle = () => {
+        find(searchTitle, "title")
+    }
+
+    const findByRating = () => {
+        if (searchRating === "All Ratings") {
+            retrieveMovies()
+        }
+        else {
+            find(searchRating, "rated")
+        }
     }
 
     const onChangeSearchTitle = e => {
@@ -81,6 +104,24 @@ const MoviesList = props => {
                         </Col>
                     </Row>
                 </Form>
+
+                <Row>
+                    { movies.map((movie) => {
+                        return (
+                            <Col>
+                                <Card style={{ width: '18rem' }}>
+                                    <Card.Img src={ movie.poster + "/100px180"} />
+                                    <Card.Body>
+                                        <Card.Title>{movie.title}</Card.Title>
+                                        <Card.Text>Rating : {movie.rated}</Card.Text>
+                                        <Card.Text>{movie.plot}</Card.Text>
+                                        <Link to={"/movies/" + movie._id}>View Reviews</Link>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        )
+                    }) }
+                </Row>
             </Container>
         </div>
     )
