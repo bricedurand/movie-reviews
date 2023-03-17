@@ -15,7 +15,7 @@ const MoviesList = props => {
    const [movies, setMovies] = useState([])
    const [searchTitle, setSearchTitle] = useState("")
    const [searchRating, setSearchRating] = useState("")
-   const [ratings, setRatings] = useState(["All Ratings"])
+   const [ratings, setRatings] = useState(["Tout classement"])
    const [currentPage, setCurrentPage] = useState(0)
    const [entriesPerPage, setEntriesPerPage] = useState(0)
    const [currentSearchMode, setCurrentSearchMode] = useState("")
@@ -46,7 +46,7 @@ const MoviesList = props => {
 
    const retrieveRatings = () => {
       MovieDataService.getRatings().then(response => {
-         setRatings(["All Ratings"].concat(response.data))
+         setRatings(["Tout classement"].concat(response.data))
       }).catch(errorHandling)
    }
 
@@ -74,7 +74,7 @@ const MoviesList = props => {
 
    const findByRating = () => {
       setCurrentSearchMode("findByRating")
-      if (searchRating === "All Ratings") {
+      if (searchRating === "Tout classement") {
          retrieveMovies()
       }
       else {
@@ -98,32 +98,29 @@ const MoviesList = props => {
             <Form>
                <Row>
                   <Col>
-                     <Form.Group>
-                        <Form.Control
-                           type="text"
-                           placeholder='Search by title'
-                           value={searchTitle}
-                           onChange={onChangeSearchTitle} />
-                     </Form.Group>
-                     <Button
-                        variant="primary"
-                        type="button"
-                        onClick={findByTitle} >Search</Button>
+                     <div class="input-group my-3">
+                        <input type="text" class="form-control" placeholder="Titre du film..." aria-label="Titre du film..." aria-describedby="button-search-by-title" value={searchTitle} onChange={onChangeSearchTitle}/>
+                        <Button
+                           variant="primary"
+                           type="button"
+                           onClick={findByTitle}>Afficher</Button>
+                     </div>
                   </Col>
                   <Col>
-                     <Form.Group>
-                        <Form.Control as="select" onChange={onChangeSearchRating}>
+                     <div class="input-group my-3">
+                        <Form.Select onChange={onChangeSearchRating}>
                            {ratings.map(rating => {
                               return (
                                  <option value={rating}>{rating}</option>
                               )
                            })}
-                        </Form.Control>
-                     </Form.Group>
-                     <Button
-                        variant="primary"
-                        type="button"
-                        onClick={findByRating}>Search</Button>
+                        </Form.Select>
+                     
+                        <Button
+                           variant="primary"
+                           type="button"
+                           onClick={findByRating}>Trier</Button>
+                     </div>
                   </Col>
                </Row>
             </Form>
