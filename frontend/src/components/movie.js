@@ -56,7 +56,7 @@ const Movie = props => {
                                     <Col>
                                        <Link to={{
                                           pathname: "/movies/" + props.match.params.id + "/review",
-                                          state: {currentReiew: review}
+                                          state: {currentReview: review}
                                        }}>Edit</Link>
                                     </Col>
                                     <Col><Button variant="link">Delete</Button></Col>

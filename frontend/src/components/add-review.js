@@ -7,6 +7,11 @@ import Movie from './movie';
 const AddReview = props => {
    let editing = false
    let initialReviewState = ""
+   
+   if (props.location.state && props.location.state.currentReview) {
+      editing = true
+      initialReviewState = props.location.state.currentReview.review
+   }
 
    const [review, setReview] = useState(initialReviewState)
    const [submitted, setSubmitted] = useState(false)
@@ -22,15 +27,23 @@ const AddReview = props => {
          user_id: props.user.id, 
          movie_id: props.match.params.id
       }
-      MovieDataService.createReview(data).then(response => {
-         setSubmitted(true)
-      }).catch( e => { console.log(e) })
+
+      if (editing) {
+         data.review_id = props.location.state.currentReview._id
+         MovieDataService.updateReview(data).then(response => {
+            setSubmitted(true)
+         }).catch( e => { console.log(e) })
+      } else {
+         MovieDataService.createReview(data).then(response => {
+            setSubmitted(true)
+         }).catch( e => { console.log(e) })
+      }
    }
    return(
       <div>
          { submitted ? (
             <div>
-               <h4>Votre avis a été publié</h4>
+               <h4>Votre avis a été { editing ? "modifié" : "publié" }</h4>
                <Link to={ `/movies/${props.match.params.id}`}>Retour au film</Link>
             </div>
          ) : (
