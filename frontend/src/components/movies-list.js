@@ -16,18 +16,25 @@ const MoviesList = props => {
    const [searchTitle, setSearchTitle] = useState("")
    const [searchRating, setSearchRating] = useState("")
    const [ratings, setRatings] = useState(["All Ratings"])
+   const [currentPage, setCurrentPage] = useState(0)
+   const [entriesPerPage, setEntriesPerPage] = useState(0)
 
    useEffect(() => {
       retrieveMovies()
       retrieveRatings()
    }, [])
 
+   useEffect(() => {
+      retrieveMovies()
+   }, [currentPage])
+
    const errorHandling = e => { console.log(e) }
 
    const retrieveMovies = () => {
-      MovieDataService.getAll().then(response => {
-         console.log(response.data)
+      MovieDataService.getAll(currentPage).then(response => {
          setMovies(response.data.movies)
+         setCurrentPage(response.data.page)
+         setEntriesPerPage(response.data.entries_per_page)
       }).catch(errorHandling)
    }
 
@@ -122,6 +129,9 @@ const MoviesList = props => {
                   )
                })}
             </Row>
+            <br/>
+            Page: {currentPage}
+            <Button variant="link" onClick={() => {setCurrentPage(currentPage + 1)}}>{entriesPerPage} prochains films &gt;</Button>
          </Container>
       </div>
    )
