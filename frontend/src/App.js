@@ -43,7 +43,7 @@ function App() {
         <Route path="/movies/:id" render={ (props) =>
           <Movie {...props} user={user} />
         }></Route>
-        <Route path="/login" rende={ (props) =>
+        <Route path="/login" render={ (props) =>
           <Login {...props} login={login}></Login>
         }></Route>
       </Switch>

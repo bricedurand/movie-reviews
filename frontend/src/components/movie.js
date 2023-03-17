@@ -55,7 +55,7 @@ const Movie = props => {
                                  <Row>
                                     <Col>
                                        <Link to={{
-                                          pathname: "/movies/" + props.match.params.id + "review",
+                                          pathname: "/movies/" + props.match.params.id + "/review",
                                           state: {currentReiew: review}
                                        }}>Edit</Link>
                                     </Col>
