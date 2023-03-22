@@ -95,41 +95,35 @@ const MoviesList = props => {
    return (
       <div className='App'>
          <Container>
-            <Form>
                <Row>
                   <Col>
-                     <div class="input-group my-3">
-                        <input type="text" class="form-control" placeholder="Titre du film..." aria-label="Titre du film..." aria-describedby="button-search-by-title" value={searchTitle} onChange={onChangeSearchTitle}/>
-                        <Button
-                           variant="primary"
-                           type="button"
-                           onClick={findByTitle}>Afficher</Button>
-                     </div>
-                  </Col>
-                  <Col>
-                     <div class="input-group my-3">
+
+                  <Form onSubmit={findMovies}>
+                     <div className="input-group my-3">
+                        <input type="text" className="form-control" placeholder="Titre du film..." aria-label="Titre du film..." aria-describedby="button-search-by-title" value={searchTitle} onChange={onChangeSearchTitle}/>
                         <Form.Select onChange={onChangeSearchRating}>
-                           {ratings.map(rating => {
-                              return (
-                                 <option value={rating}>{rating}</option>
-                              )
-                           })}
-                        </Form.Select>
-                     
-                        <Button
-                           variant="primary"
-                           type="button"
-                           onClick={findByRating}>Trier</Button>
-                     </div>
+                              {ratings.map(rating => {
+                                 return (
+                                    <option value={rating}>{rating}</option>
+                                 )
+                              })}
+                           </Form.Select>
+                        
+                           <Button
+                              variant="primary"
+                              type="submit">Trier</Button>
+                        </div>
+                  </Form>
+ 
                   </Col>
                </Row>
-            </Form>
+
 
             <Row>
                {movies.map((movie) => {
                   return (
-                     <Col>
-                        <Card style={{ width: '18rem' }}>
+                     <Col md="4">
+                        <Card>
                            <Card.Img src={movie.poster + "/100px180"} />
                            <Card.Body>
                               <Card.Title>{movie.title}</Card.Title>
