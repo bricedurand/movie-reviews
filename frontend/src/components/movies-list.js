@@ -18,26 +18,20 @@ const MoviesList = props => {
    const [ratings, setRatings] = useState(["Tout classement"])
    const [currentPage, setCurrentPage] = useState(0)
    const [entriesPerPage, setEntriesPerPage] = useState(0)
-   const [currentSearchMode, setCurrentSearchMode] = useState("")
 
    useEffect(() => {
-      retrieveMovies()
+      findMovies()
       retrieveRatings()
    }, [])
 
    useEffect(() => {
-      setCurrentPage(0)
-   }, [currentSearchMode])
-
-   useEffect(() => {
-      retrieveNextPage()
+      findMovies()
    }, [currentPage])
 
    const errorHandling = e => { console.log(e) }
 
-   const retrieveMovies = () => {
-      setCurrentSearchMode("")
-      MovieDataService.getAll(currentPage).then(response => {
+   const findMovies = () => {
+      MovieDataService.find(searchTitle, searchRating, currentPage).then(response => {
          setMovies(response.data.movies)
          setCurrentPage(response.data.page)
          setEntriesPerPage(response.data.entries_per_page)
@@ -46,40 +40,13 @@ const MoviesList = props => {
 
    const retrieveRatings = () => {
       MovieDataService.getRatings().then(response => {
-         setRatings(["Tout classement"].concat(response.data))
+         setRatings(["All ratings"].concat(response.data))
       }).catch(errorHandling)
    }
 
-   const retrieveNextPage = () => {
-      if (currentSearchMode === "findByTitle")
-         findByTitle()
-      else if (currentSearchMode === "findByRating") 
-         findByRating()
-      else
-         retrieveMovies()
-
-   }
-
-   const find = (query, by) => {
-      MovieDataService.find(query, by, currentPage).then(response => {
-         setMovies(response.data.movies)
-      }
-      ).catch(errorHandling)
-   }
-
-   const findByTitle = () => {
-      setCurrentSearchMode("findByTitle")
-      find(searchTitle, "title")
-   }
-
-   const findByRating = () => {
-      setCurrentSearchMode("findByRating")
-      if (searchRating === "Tout classement") {
-         retrieveMovies()
-      }
-      else {
-         find(searchRating, "rated")
-      }
+   const onSubmitFindMovies = event => {
+      event.preventDefault()
+      findMovies()
    }
 
    const onChangeSearchTitle = e => {
@@ -95,10 +62,9 @@ const MoviesList = props => {
    return (
       <div className='App'>
          <Container>
-               <Row>
-                  <Col>
-
-                  <Form onSubmit={findMovies}>
+            <Row>
+               <Col>
+                  <Form onSubmit={onSubmitFindMovies}>
                      <div className="input-group my-3">
                         <input type="text" className="form-control" placeholder="Titre du film..." aria-label="Titre du film..." aria-describedby="button-search-by-title" value={searchTitle} onChange={onChangeSearchTitle}/>
                         <Form.Select onChange={onChangeSearchRating}>
@@ -114,9 +80,8 @@ const MoviesList = props => {
                               type="submit">Trier</Button>
                         </div>
                   </Form>
- 
-                  </Col>
-               </Row>
+               </Col>
+            </Row>
 
 
             <Row>
