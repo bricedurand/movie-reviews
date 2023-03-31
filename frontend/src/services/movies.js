@@ -9,8 +9,8 @@ class MovieDataService {
       return axios.get(`http://localhost:5000/api/v1/movies/id/${id}`)
    }
 
-   find(query, by = `title`, page = 0) {
-      return axios.get(`http://localhost:5000/api/v1/movies?${by}=${query}&page=${page}`)
+   find(title = "", rating = "", page = 0) {
+      return axios.get(`http://localhost:5000/api/v1/movies?title=${title}&rated=${rating}&page=${page}`)
    }
 
    createReview(data) {
